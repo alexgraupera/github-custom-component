@@ -1,15 +1,13 @@
 """GitHub sensor platform."""
+from datetime import timedelta
 import logging
 import re
-from datetime import timedelta
 from typing import Any, Callable, Dict, Optional
 from urllib import parse
 
-import gidgethub
-import voluptuous as vol
 from aiohttp import ClientError
+import gidgethub
 from gidgethub.aiohttp import GitHubAPI
-
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (
     ATTR_NAME,
@@ -26,6 +24,7 @@ from homeassistant.helpers.typing import (
     DiscoveryInfoType,
     HomeAssistantType,
 )
+import voluptuous as vol
 
 from .const import (
     ATTR_CLONES,
@@ -46,17 +45,13 @@ from .const import (
     BASE_API_URL,
 )
 
-
 _LOGGER = logging.getLogger(__name__)
 # Time between updating data from GitHub
 SCAN_INTERVAL = timedelta(minutes=10)
 
 CONF_REPOS = "repositories"
 REPO_SCHEMA = vol.Schema(
-    {
-        vol.Required(CONF_PATH): cv.string, 
-        vol.Optional(CONF_NAME): cv.string
-    }
+    {vol.Required(CONF_PATH): cv.string, vol.Optional(CONF_NAME): cv.string}
 )
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
